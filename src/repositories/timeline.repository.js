@@ -6,9 +6,12 @@ async function getPostsData() {
             users.username,
             users.picture_url,
             posts.body,
-            posts.post_url
+            posts.post_url,
+            posts.created_at
         FROM users
-        JOIN posts ON users.id = posts.user_id;
+        JOIN posts ON users.id = posts.user_id
+        ORDER BY posts.created_at DESC
+        LIMIT 20;
     `)).rows
 }
 
