@@ -6,7 +6,7 @@ async function findExistingUser(email) {
       `SELECT * FROM users WHERE email = $1;`,
       [email]
     );
-    return existingUser;
+    return existingUser.rows;
   } catch (error) {
     return error.message;
   }
@@ -23,4 +23,15 @@ async function insertNewUser(username, email, passwordHash, picture_url) {
   }
 }
 
-export { findExistingUser, insertNewUser };
+async function insertSession(user_id, token) {
+  try {
+    return await connection.query(
+      `INSERT INTO sessions ("user_id", token) VALUES ($1, $2);`,
+      [user_id, token]
+    );
+  } catch (error) {
+    return error.message;
+  }
+}
+
+export { findExistingUser, insertNewUser, insertSession };

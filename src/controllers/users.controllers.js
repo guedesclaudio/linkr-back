@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { v4 as uuid } from "uuid";
 import * as userRepository from "../repositories/users.repository.js";
 
 async function createNewUser(req, res) {
@@ -18,4 +19,16 @@ async function createNewUser(req, res) {
   }
 }
 
-export { createNewUser };
+async function postLogin(req, res) {
+  const user_id = res.locals.user_id;
+  const token = uuid();
+
+  try {
+    await userRepository.insertSession(user_id, token);
+    return res.status(200).send({ token: token });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+export { createNewUser, postLogin };
