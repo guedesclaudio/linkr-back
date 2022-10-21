@@ -1,6 +1,6 @@
 import connection from "../database/database.js";
 
-async function getSearchUser(search) {
+async function postSearchUser(search) {
   return (
     await connection.query(
       `
@@ -14,4 +14,4 @@ async function getSearchUser(search) {
     )
   ).rows;
 }
-export { getSearchUser };
+export { postSearchUser };
