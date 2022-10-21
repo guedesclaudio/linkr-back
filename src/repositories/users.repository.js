@@ -34,4 +34,20 @@ async function insertSession(user_id, token) {
   }
 }
 
-export { findExistingUser, insertNewUser, insertSession };
+async function inactivateSession(user_id, token) {
+  try {
+    const sessionId = await connection.query(
+      `SELECT id FROM sessions WHERE "user_id" = $1 AND token = $2;`,
+      [user_id, token]
+    );
+    console.log(sessionId.rows[0].id);
+    return await connection.query(
+      `UPDATE sessions SET active = false WHERE id = $1;`,
+      [sessionId.rows[0].id]
+    );
+  } catch (error) {
+    return error.message;
+  }
+}
+
+export { findExistingUser, insertNewUser, insertSession, inactivateSession };

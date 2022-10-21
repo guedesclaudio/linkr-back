@@ -20,7 +20,7 @@ async function createNewUser(req, res) {
 }
 
 async function postLogin(req, res) {
-  const user_id = res.locals.user_id;
+  const user_id = res.locals.user.id;
   const token = uuid();
 
   try {
@@ -31,10 +31,21 @@ async function postLogin(req, res) {
   }
 }
 
+async function postLogout(req, res) {
+  const token = res.locals.token;
+  const user_id = res.locals.user.id;
+  console.log(token, user_id);
+  try {
+    await userRepository.inactivateSession(user_id, token);
+    return res.status(200).send({ message: "session inactivated" });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
 async function validateSession(req, res) {
-  console.log("cheguei");
   const token = res.locals.token;
   return res.status(200).send({ token: token });
 }
 
-export { createNewUser, postLogin, validateSession };
+export { createNewUser, postLogin, validateSession, postLogout };
