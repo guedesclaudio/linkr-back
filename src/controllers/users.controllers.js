@@ -31,4 +31,10 @@ async function postLogin(req, res) {
   }
 }
 
-export { createNewUser, postLogin };
+async function validateSession(req, res) {
+  console.log("cheguei");
+  const token = res.locals.token;
+  return res.status(200).send({ token: token });
+}
+
+export { createNewUser, postLogin, validateSession };

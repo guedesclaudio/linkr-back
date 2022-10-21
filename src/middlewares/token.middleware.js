@@ -1,8 +1,8 @@
 import connection from "../database/database.js";
 
-async function verifyToken (req, res, next) {
-    const authorization = req.headers.authorization;
-    const token = authorization?.replace("Bearer ", "");
+async function verifyToken(req, res, next) {
+  const authorization = req.headers.authorization;
+  const token = authorization?.replace("Bearer ", "");
 
     try {
         if (token !== null && token !== undefined) {
