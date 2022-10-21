@@ -3,7 +3,7 @@ import connection from "../database/database.js"
 async function getPostsData() {
     return (await connection.query(`
         SELECT 
-            users.username,
+            users.username AS owner_post,
             users.picture_url,
             posts.id,
             posts.body,
@@ -26,6 +26,16 @@ async function getLikesCount() {
     `)).rows
 }
 
+async function getListLikes() {
+    return (await connection.query(`
+    SELECT 
+        users.username,
+        likes.post_id
+    FROM likes
+    JOIN users ON users.id = likes.user_id;
+    `)).rows
+}
+
 
 async function getMyLikes({id}) {
     return (await connection.query(`
@@ -34,4 +44,4 @@ async function getMyLikes({id}) {
     `, [id])).rows
 }
 
-export {getPostsData, getMyLikes, getLikesCount}
+export {getPostsData, getMyLikes, getLikesCount, getListLikes}
