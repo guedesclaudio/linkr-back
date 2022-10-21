@@ -1,6 +1,9 @@
 {
   "name": "projeto17-linkr-back",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.x"
+  },
   "description": "",
   "type": "module",
   "main": "server.js",
