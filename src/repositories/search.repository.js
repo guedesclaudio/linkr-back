@@ -4,7 +4,7 @@ async function postSearchUser(search) {
   return (
     await connection.query(
       `
-    SELECT username, picture_url
+    SELECT id, username, picture_url
     FROM users 
     WHERE username LIKE $1
     ORDER BY username
