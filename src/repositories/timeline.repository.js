@@ -3,9 +3,10 @@ import connection from "../database/database.js"
 async function getPostsData() {
     return (await connection.query(`
         SELECT 
+            users.id AS user_id,
             users.username AS owner_post,
             users.picture_url,
-            posts.id,
+            posts.id AS post_id,
             posts.body,
             posts.post_url,
             posts.created_at
