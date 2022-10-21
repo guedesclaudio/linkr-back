@@ -2,12 +2,13 @@ import { getPostsData, getMyLikes, getLikesCount } from "../repositories/timelin
 import urlMetadata from "url-metadata"
 
 async function listTimeline(req, res) {
-
-    const {userId} = req.params
+    
+    const {id} = res.locals.user 
+    
 
     try {
         const posts = await getPostsData()
-        const myLikes = await getMyLikes({userId})
+        const myLikes = await getMyLikes({id})
         const likesCount = await getLikesCount()
 
         const postsJoinMetadata = await Promise.all(posts.map(async value => {
