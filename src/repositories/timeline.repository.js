@@ -27,11 +27,11 @@ async function getLikesCount() {
 }
 
 
-async function getMyLikes({userId}) {
+async function getMyLikes({id}) {
     return (await connection.query(`
     SELECT * FROM likes
     WHERE user_id = $1
-    `, [userId])).rows
+    `, [id])).rows
 }
 
 export {getPostsData, getMyLikes, getLikesCount}

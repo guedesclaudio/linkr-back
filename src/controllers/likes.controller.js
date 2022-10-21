@@ -3,15 +3,16 @@ import {insertLike, deleteLike} from "../repositories/likes.repository.js"
 async function likeOrDeslikePost(req, res) {
 
     const {postId} = req.params
-    const {likeValue, userId} = req.body
+    const {likeValue} = req.body
+    const id = res.locals.userId
 
     try {
         if (likeValue) {
-            await insertLike({userId, postId})
+            await insertLike({id, postId})
             return res.sendStatus(200)
         }
     
-        await deleteLike({userId, postId})
+        await deleteLike({id, postId})
         return res.sendStatus(200)
         
     } catch (error) {

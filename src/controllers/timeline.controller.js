@@ -4,7 +4,6 @@ import urlMetadata from "url-metadata"
 async function listTimeline(req, res) {
     
     const {id} = res.locals.user 
-    
 
     try {
         const posts = await getPostsData()
