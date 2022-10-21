@@ -18,6 +18,7 @@ async function verifyToken(req, res, next) {
                 const user = findUser.rows[0];
                 delete user.password;
                 res.locals.user = user;
+                res.locals.token = token;
                 return next();
             }
         }
