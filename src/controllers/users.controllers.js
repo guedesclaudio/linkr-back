@@ -26,10 +26,17 @@ async function postLogin(req, res) {
 
   try {
     await userRepository.insertSession(user_id, token);
+    console.log({ token, user_image });
     return res.status(200).send({ token, user_image });
   } catch (error) {
     return res.status(500).send(error.message);
   }
 }
 
-export { createNewUser, postLogin };
+async function validateSession(req, res) {
+  //console.log("cheguei");
+  const token = res.locals.token;
+  return res.status(200).send({ token: token });
+}
+
+export { createNewUser, postLogin, validateSession };
