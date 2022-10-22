@@ -19,7 +19,8 @@ async function verifyToken(req, res, next) {
         delete user.password;
         res.locals.user = user;
         res.locals.token = token;
-        return next();
+        next();
+        return;
       }
     }
     return res.sendStatus(401);

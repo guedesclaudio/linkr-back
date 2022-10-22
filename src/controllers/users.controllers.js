@@ -20,12 +20,14 @@ async function createNewUser(req, res) {
 }
 
 async function postLogin(req, res) {
-  const user_id = res.locals.user.id;
+  const user_id = res.locals.user_id;
+  const username = res.locals.username;
+  const picture_url = res.locals.picture_url;
   const token = uuid();
 
   try {
     await userRepository.insertSession(user_id, token);
-    return res.status(200).send({ token: token });
+    return res.status(200).send({ token, user_id, username, picture_url });
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -34,9 +36,11 @@ async function postLogin(req, res) {
 async function postLogout(req, res) {
   const token = res.locals.token;
   const user_id = res.locals.user.id;
-  console.log(token, user_id);
   try {
-    await userRepository.inactivateSession(user_id, token);
+    const response = await userRepository.inactivateSession(user_id, token);
+
+    if (!response)
+      return res.status(404).send({ error: "session was already inactive" });
     return res.status(200).send({ message: "session inactivated" });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -45,7 +49,10 @@ async function postLogout(req, res) {
 
 async function validateSession(req, res) {
   const token = res.locals.token;
-  return res.status(200).send({ token: token });
+  const activeSession = await userRepository.findActiveSession(token);
+  if (activeSession.length !== 0) {
+    return res.status(200).send({ token: activeSession[0].token });
+  } else return res.status(404).send({ error: "session is inactive" });
 }
 
 export { createNewUser, postLogin, validateSession, postLogout };

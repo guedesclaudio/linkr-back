@@ -48,6 +48,8 @@ async function validateLogin(req, res, next) {
     }
     if (existingUser.length !== 0 && passwordIsValid) {
       res.locals.user_id = existingUser[0].id;
+      res.locals.username = existingUser[0].username;
+      res.locals.picture_url = existingUser[0].picture_url;
       next();
     } else {
       return res.status(401).send({ error: "E-mail or password are invalid" });
