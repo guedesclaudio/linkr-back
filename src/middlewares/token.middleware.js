@@ -19,13 +19,12 @@ async function verifyToken(req, res, next) {
         delete user.password;
         res.locals.user = user;
         res.locals.token = token;
-        next();
-        return;
+        return next();
       }
     }
     return res.sendStatus(401);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.sendStatus(500);
   }
 }
