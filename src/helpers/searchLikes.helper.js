@@ -5,7 +5,7 @@ async function searchLikes({id, username}) {
 
     try {
         const posts = await getPostsData()
-        const myLikes = await getMyLikes({id})
+        const myLikes = await getMyLikes(id)
         const likesCount = await getLikesCount()
         const listLikes = await getListLikes()
 
@@ -14,12 +14,12 @@ async function searchLikes({id, username}) {
             let messageToolTip = ""
 
             myLikes.filter(element => {
-                if (value.id === element.post_id) {
+                if (value.post_id === element.post_id) {
                     value.liked = true
                 }
             })
             likesCount.filter(element => {
-                if (value.id === element.post_id) {
+                if (value.post_id === element.post_id) {
                     value.likesCount = element.likes_count
                 }
             })
@@ -27,7 +27,7 @@ async function searchLikes({id, username}) {
                 if (personList.length === 3) {
                     break
                 }
-                if (value.id === listLikes[i].post_id && listLikes[i].username !== username) {
+                if (value.post_id === listLikes[i].post_id && listLikes[i].username !== username) {
                     personList.push(listLikes[i].username)
                 }
             }

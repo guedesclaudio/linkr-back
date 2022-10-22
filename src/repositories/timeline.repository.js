@@ -38,7 +38,7 @@ async function getListLikes() {
 }
 
 
-async function getMyLikes({id}) {
+async function getMyLikes(id) {
     return (await connection.query(`
     SELECT * FROM likes
     WHERE user_id = $1
