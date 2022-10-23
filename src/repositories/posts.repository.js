@@ -29,4 +29,11 @@ function editPostInDB (post_id, body) {
     `, [body, post_id]);
 }
 
-export { insertPostInDB, checkIfPostBelongsToUser, editPostInDB };
+function deletePostInDB (post_id) {
+    return connection.query(`
+        DELETE FROM posts
+        WHERE id = $1;
+    `, [post_id]);
+}
+
+export { insertPostInDB, checkIfPostBelongsToUser, editPostInDB, deletePostInDB };

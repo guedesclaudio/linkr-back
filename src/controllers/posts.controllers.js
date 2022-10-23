@@ -38,4 +38,28 @@ async function editPost (req, res) {
     }
 }
 
-export { insertPost, editPost };
+async function deletePost (req, res) {
+    const user = res.locals.user;
+    const post_id = req.headers.postid;
+
+    try {
+        const postBelongsToUser = await postsRepository.checkIfPostBelongsToUser(user.id, post_id);
+
+        if (postBelongsToUser) {
+            try {
+                await postsRepository.deletePostInDB(post_id);
+                return res.sendStatus(204);
+
+            } catch (error) {
+                return res.sendStatus(500);
+            }
+        }
+
+        return res.sendStatus(401);
+        
+    } catch (error) {
+        return res.sendStatus(500);
+    }
+}
+
+export { insertPost, editPost, deletePost };
