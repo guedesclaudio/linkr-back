@@ -4,7 +4,6 @@ async function searchUser(req, res) {
   const { search } = req.body;
   try {
     const resultSearch = await postSearchUser(search);
-    console.log("back", search);
 
     res.status(200).send(resultSearch);
   } catch (error) {
