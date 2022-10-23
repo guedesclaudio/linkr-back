@@ -1,6 +1,6 @@
 import urlMetadata from "url-metadata"
 
-async function getMetadata(url) {
+async function getMetadata(url, res) {
     try {
         const {title, image, description} = await urlMetadata(url)
         const metadata = {title, image, description}

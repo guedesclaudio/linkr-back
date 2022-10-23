@@ -5,7 +5,7 @@ async function listTimeline(req, res) {
     const {id, username} = res.locals.user 
 
     try {
-        const searchResult = await searchLikes({id,username})
+        const searchResult = await searchLikes({id,username, req, res})
 
         res.status(200).send(searchResult)
         
