@@ -1,4 +1,4 @@
-import urlMetadata from "url-metadata"
+import urlMetadata from "url-metadata";
 
 async function getMetadata(url, res) {
     try {
@@ -10,4 +10,4 @@ async function getMetadata(url, res) {
     }
 }
 
-export {getMetadata}
+export { getMetadata };
