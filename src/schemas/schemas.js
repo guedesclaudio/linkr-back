@@ -5,6 +5,10 @@ const newPostSchema = joi.object({
     body: joi.string().allow('')
 });
 
+const editPostSchema = joi.object({
+    body: joi.string().allow('')
+});
+
 function verifyNewPostSchema (req, res, next) {
     const validation = newPostSchema.validate(req.body, {abortEarly: false});
     const isValidUrl = urlString => {
@@ -31,4 +35,13 @@ function verifyNewPostSchema (req, res, next) {
     return next();
 }
 
-export { verifyNewPostSchema };
+function verifyEditPostSchema (req, res, next) {
+    const validation = editPostSchema.validate(req.body, {abortEarly: false});
+    if (validation.error) {
+        const errors = validation.error.details.map(details => details.message);
+        return res.status(422).send(errors);
+    }
+    return next();
+}
+
+export { verifyNewPostSchema, verifyEditPostSchema };
