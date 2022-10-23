@@ -56,6 +56,13 @@ function editPostInDB(post_id, body) {
   );
 }
 
+function deletePostInDB (post_id) {
+    return connection.query(`
+        DELETE FROM posts
+        WHERE id = $1;
+    `, [post_id]);
+}
+
 export {
   insertPostInDB,
   selectHashtag,
@@ -63,4 +70,5 @@ export {
   insertIntoMiddleHashtagsPosts,
   checkIfPostBelongsToUser,
   editPostInDB,
+  deletePostInDB
 };
