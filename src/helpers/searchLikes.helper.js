@@ -1,7 +1,7 @@
 import { getPostsData, getMyLikes, getLikesCount, getListLikes } from "../repositories/timeline.repository.js"
 import { getMetadata } from "../helpers/getMetadata.helper.js"
 
-async function searchLikes({id, username}) {
+async function searchLikes({id, username, req, res}) {
 
     try {
         const posts = await getPostsData()
@@ -12,15 +12,17 @@ async function searchLikes({id, username}) {
         const postsJoinMetadata = await Promise.all(posts.map(async value => {
             let personList = []
             let messageToolTip = ""
+            value.liked = false
+            value.likesCount = 0
 
             myLikes.filter(element => {
                 if (value.post_id === element.post_id) {
                     value.liked = true
-                }
+                } 
             })
             likesCount.filter(element => {
                 if (value.post_id === element.post_id) {
-                    value.likesCount = element.likes_count
+                    value.likesCount = Number(element.likes_count)
                 }
             })
             for (let i in listLikes) {
@@ -56,7 +58,7 @@ async function searchLikes({id, username}) {
                 messageToolTip = "Seja o primeiro a curtir"
             }
     
-            const metadata = await getMetadata(value.post_url)
+            const metadata = await getMetadata(value.post_url, res)
             return {
                 ...value,
                 metadata,
