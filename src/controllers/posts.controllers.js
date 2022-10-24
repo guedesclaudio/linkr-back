@@ -13,8 +13,6 @@ async function insertPost(req, res) {
     );
 
     const postId = insertPost.rows[0].id;
-    console.log(postId);
-
     const hashtags = findHashtags(body);
     const hashtagsId = [];
 
