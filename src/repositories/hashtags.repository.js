@@ -14,4 +14,15 @@ async function getTop10Hashtags() {
   );
 }
 
-export { getTop10Hashtags };
+async function getPostsIdByHashtag(hashtag) {
+  return await connection.query(
+    `SELECT post_id
+    FROM hashtags_posts
+    JOIN hashtags
+      ON hashtags_posts.hashtag_id = hashtags.id
+    WHERE hashtags.name = $1;`,
+    [hashtag]
+  );
+}
+
+export { getTop10Hashtags, getPostsIdByHashtag };

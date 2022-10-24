@@ -1,4 +1,7 @@
-import { getTop10Hashtags } from "../repositories/hashtags.repository.js";
+import {
+  getTop10Hashtags,
+  getPostsIdByHashtag,
+} from "../repositories/hashtags.repository.js";
 
 async function hashtagsListTop10(req, res) {
   try {
@@ -11,4 +14,17 @@ async function hashtagsListTop10(req, res) {
   }
 }
 
-export { hashtagsListTop10 };
+async function PostsIdByHashtag(req, res) {
+  const { hashtag } = req.params;
+
+  try {
+    const postsList = await getPostsIdByHashtag(hashtag);
+
+    res.send(postsList.rows);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+}
+
+export { hashtagsListTop10, PostsIdByHashtag };
