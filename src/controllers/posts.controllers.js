@@ -83,7 +83,7 @@ async function editPost(req, res) {
     if (postBelongsToUser) {
       try {
         await postsRepository.editPostInDB(post_id, body);
-        return res.sendStatus(204);
+        return res.status(204).send({body});
       } catch (error) {
         return res.sendStatus(500);
       }
