@@ -55,4 +55,20 @@ async function validateSession(req, res) {
   } else return res.status(404).send({ error: "session is inactive" });
 }
 
-export { createNewUser, postLogin, validateSession, postLogout };
+async function verifyUserById(req, res) {
+  const { userId } = req.params;
+  try {
+    const existingUser = await userRepository.findExistingUserById(userId);
+    return res.status(200).send(existingUser);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+export {
+  createNewUser,
+  postLogin,
+  validateSession,
+  postLogout,
+  verifyUserById,
+};

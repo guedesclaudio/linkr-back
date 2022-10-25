@@ -62,10 +62,23 @@ async function inactivateSession(user_id, token) {
   }
 }
 
+async function findExistingUserById(userId) {
+  try {
+    const existingUser = await connection.query(
+      `SELECT id, username FROM users WHERE id = $1;`,
+      [userId]
+    );
+    return existingUser.rows;
+  } catch (error) {
+    return error.message;
+  }
+}
+
 export {
   findExistingUser,
   insertNewUser,
   insertSession,
   inactivateSession,
   findActiveSession,
+  findExistingUserById,
 };
