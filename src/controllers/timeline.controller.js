@@ -1,18 +1,16 @@
-import { searchLikes } from "../helpers/searchLikes.helper.js"
+import { searchLikes } from "../helpers/searchLikes.helper.js";
 
 async function listTimeline(req, res) {
-    
-    const {id, username} = res.locals.user 
+  const { id, username } = res.locals.user;
 
-    try {
-        const searchResult = await searchLikes({id,username, req, res})
+  try {
+    const searchResult = await searchLikes({ id, username, req, res });
 
-        res.status(200).send(searchResult)
-        
-    } catch (error) {
-        console.error(error)
-        res.sendStatus(500)
-    }
+    return res.status(200).send(searchResult);
+  } catch (error) {
+    console.error(error);
+    return res.sendStatus(500);
+  }
 }
 
-export {listTimeline}
+export { listTimeline };
