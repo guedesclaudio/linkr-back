@@ -57,6 +57,8 @@ async function deletePost(req, res) {
 
     if (postBelongsToUser) {
       try {
+        await postsRepository.deleteCommentsPost(post_id);
+        await postsRepository.deleteReposts(post_id);
         await postsRepository.deleteHashtagsPost(post_id);
         await postsRepository.deleteLikesPost(post_id);
         await postsRepository.deletePostInDB(post_id);
