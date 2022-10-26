@@ -76,6 +76,16 @@ function deleteHashtagsPost(post_id) {
   );
 }
 
+function deleteLikesPost(post_id) {
+  return connection.query(
+    `
+      DELETE FROM likes
+      WHERE post_id = $1;
+  `,
+    [post_id]
+  );
+}
+
 export {
   insertPostInDB,
   selectHashtag,
@@ -85,4 +95,5 @@ export {
   editPostInDB,
   deletePostInDB,
   deleteHashtagsPost,
+  deleteLikesPost,
 };
