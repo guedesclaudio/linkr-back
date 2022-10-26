@@ -4,7 +4,7 @@ import { queryUserRepost } from "../repositories/reposts.repository.js"
 
 async function validateRepost(req, res, next) {
 
-    const {postId} = req.body
+    const {postId} = req.params
     const userId = res.locals.user.id
 
     if (!postId || isNaN(postId)) {

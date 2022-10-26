@@ -2,7 +2,7 @@ import {insertedRepost} from "../repositories/reposts.repository.js"
 
 async function sendRepost(req, res) {
 
-    const {postId} = req.body
+    const {postId} = req.params
     const userId = res.locals.user.id
     
     try {

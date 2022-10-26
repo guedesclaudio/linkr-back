@@ -5,6 +5,6 @@ import { verifyToken } from "../middlewares/token.middleware.js"
 
 const router = express.Router()
 
-router.post("/reposts", verifyToken, validateRepost, sendRepost)
+router.post("/reposts/:postId", verifyToken, validateRepost, sendRepost)
 
 export default router

@@ -2,16 +2,22 @@ import connection from "../database/database.js"
 
 async function getPostsData() {
     return (await connection.query(`
-        SELECT 
-            users.id AS user_id,
+            SELECT 
+            DISTINCT users.id AS user_id,
             users.username AS owner_post,
             users.picture_url,
             posts.id AS post_id,
             posts.body,
             posts.post_url,
-            posts.created_at
+            posts.created_at,
+            reposts.id AS repost_id,
+            reposts.user_id AS repost_user_id,
+            u.username AS reposted_by,
+            reposts.created_at AS reposted_on
         FROM users
         JOIN posts ON users.id = posts.user_id
+        LEFT JOIN reposts ON posts.id = reposts.post_id
+        LEFT JOIN users AS u ON reposts.user_id = u.id
         ORDER BY posts.created_at DESC
         LIMIT 20;
     `)).rows
