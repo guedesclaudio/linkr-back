@@ -57,10 +57,10 @@ function editPostInDB(post_id, body) {
 }
 
 function deletePostInDB (post_id) {
-  return connection.query(`
-      DELETE FROM posts
-      WHERE id = $1;
-  `, [post_id]);
+    return connection.query(`
+        DELETE FROM posts
+        WHERE id = $1;
+    `, [post_id]);
 }
 
 function deleteLikesPost (post_id) {
@@ -77,6 +77,19 @@ function deleteHashtagsPost (post_id) {
   `, [post_id]);
 }
 
+function deleteCommentsPost (post_id) {
+  return connection.query(`
+      DELETE FROM comments
+      WHERE post_id = $1;
+  `, [post_id]);
+}
+function deleteReposts (post_id) {
+  return connection.query(`
+      DELETE FROM reposts
+      WHERE post_id = $1;
+  `, [post_id]);
+}
+
 export {
   insertPostInDB,
   selectHashtag,
@@ -86,5 +99,7 @@ export {
   editPostInDB,
   deletePostInDB,
   deleteLikesPost,
-  deleteHashtagsPost
+  deleteHashtagsPost,
+  deleteCommentsPost,
+  deleteReposts
 };
