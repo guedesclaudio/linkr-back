@@ -1,4 +1,4 @@
-import { getPostsData, getMyLikes, getLikesCount, getListLikes } from "../repositories/timeline.repository.js"
+import { getPostsData, getMyLikes, getLikesCount, getRepostsCount, getListLikes } from "../repositories/timeline.repository.js"
 import { getMetadata } from "../helpers/getMetadata.helper.js"
 
 async function searchLikes({id, username, req, res}) {
@@ -7,6 +7,7 @@ async function searchLikes({id, username, req, res}) {
         const posts = await getPostsData()
         const myLikes = await getMyLikes(id)
         const likesCount = await getLikesCount()
+        const repostsCount = await getRepostsCount()
         const listLikes = await getListLikes()
 
         const postsJoinMetadata = await Promise.all(posts.map(async value => {
@@ -14,6 +15,7 @@ async function searchLikes({id, username, req, res}) {
             let messageToolTip = ""
             value.liked = false
             value.likesCount = 0
+            value.repostsCount = 0
 
             myLikes.filter(element => {
                 if (value.post_id === element.post_id) {
@@ -23,6 +25,11 @@ async function searchLikes({id, username, req, res}) {
             likesCount.filter(element => {
                 if (value.post_id === element.post_id) {
                     value.likesCount = Number(element.likes_count)
+                }
+            })
+            repostsCount.filter(element => {
+                if (value.post_id === element.post_id) {
+                    value.repostsCount = Number(element.reposts_count)
                 }
             })
             for (let i in listLikes) {

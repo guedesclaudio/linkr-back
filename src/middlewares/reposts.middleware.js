@@ -1,8 +1,11 @@
 import {getPosts} from "../repositories/likes.repository.js"
+import { queryUserRepost } from "../repositories/reposts.repository.js"
+
 
 async function validateRepost(req, res, next) {
 
     const {postId} = req.body
+    const userId = res.locals.user.id
 
     if (!postId || isNaN(postId)) {
         return res.sendStatus(400)
@@ -14,7 +17,12 @@ async function validateRepost(req, res, next) {
         if (!post) {
             return res.sendStatus(404)
         }
-        return console.log("post " + postId + " repostado")
+
+        const userRepost = await queryUserRepost({postId, userId})
+        
+        if (userRepost) {
+            return res.sendStatus(400)
+        }
         next()
 
     } catch (error) {

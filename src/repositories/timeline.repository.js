@@ -23,7 +23,17 @@ async function getLikesCount() {
         post_id,
         COUNT (likes.id) AS likes_count
     FROM likes
-    GROUP BY likes.post_id
+    GROUP BY likes.post_id;
+    `)).rows
+}
+
+async function getRepostsCount() {
+    return (await connection.query(`
+    SELECT
+        post_id,
+        COUNT (reposts.id) AS reposts_count
+    FROM reposts
+    GROUP BY reposts.post_id;
     `)).rows
 }
 
@@ -45,4 +55,4 @@ async function getMyLikes(id) {
     `, [id])).rows
 }
 
-export {getPostsData, getMyLikes, getLikesCount, getListLikes}
+export {getPostsData, getMyLikes, getLikesCount, getRepostsCount, getListLikes}
