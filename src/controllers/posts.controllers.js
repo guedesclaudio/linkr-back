@@ -13,8 +13,6 @@ async function insertPost(req, res) {
     );
 
     const postId = insertPost.rows[0].id;
-    console.log(postId);
-
     const hashtags = findHashtags(body);
     const hashtagsId = [];
 
@@ -56,6 +54,8 @@ async function deletePost (req, res) {
 
         if (postBelongsToUser) {
             try {
+                await postsRepository.deleteLikesPost(post_id);
+                await postsRepository.deleteHashtagsPost(post_id);
                 await postsRepository.deletePostInDB(post_id);
                 return res.sendStatus(204);
 
