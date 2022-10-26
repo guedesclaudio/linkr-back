@@ -56,11 +56,34 @@ function editPostInDB(post_id, body) {
   );
 }
 
-function deletePostInDB (post_id) {
-    return connection.query(`
+function deletePostInDB(post_id) {
+  return connection.query(
+    `
         DELETE FROM posts
         WHERE id = $1;
-    `, [post_id]);
+    `,
+    [post_id]
+  );
+}
+
+function deleteHashtagsPost(post_id) {
+  return connection.query(
+    `
+      DELETE FROM hashtags_posts
+      WHERE post_id = $1;
+  `,
+    [post_id]
+  );
+}
+
+function deleteLikesPost(post_id) {
+  return connection.query(
+    `
+      DELETE FROM likes
+      WHERE post_id = $1;
+  `,
+    [post_id]
+  );
 }
 
 export {
@@ -70,5 +93,7 @@ export {
   insertIntoMiddleHashtagsPosts,
   checkIfPostBelongsToUser,
   editPostInDB,
-  deletePostInDB
+  deletePostInDB,
+  deleteHashtagsPost,
+  deleteLikesPost,
 };
