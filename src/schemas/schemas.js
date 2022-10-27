@@ -9,6 +9,10 @@ const editPostSchema = joi.object({
     body: joi.string().allow('')
 });
 
+const newCommentSchema = joi.object({
+    comment: joi.string().required()
+});
+
 function verifyNewPostSchema (req, res, next) {
     const validation = newPostSchema.validate(req.body, {abortEarly: false});
     const isValidUrl = urlString => {
@@ -44,4 +48,13 @@ function verifyEditPostSchema (req, res, next) {
     return next();
 }
 
-export { verifyNewPostSchema, verifyEditPostSchema };
+function verifyNewCommentSchema (req, res, next) {
+    const validation = newCommentSchema.validate(req.body, {abortEarly: false});
+    if (validation.error) {
+        const errors = validation.error.details.map(details => details.message);
+        return res.status(422).send(errors);
+    }
+    return next();
+}
+
+export { verifyNewPostSchema, verifyEditPostSchema, verifyNewCommentSchema };

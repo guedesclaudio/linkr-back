@@ -7,10 +7,10 @@ async function hashtagsListTop10(req, res) {
   try {
     const hashtagList = await getTop10Hashtags();
 
-    res.send(hashtagList.rows);
+    return res.send(hashtagList.rows);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
@@ -20,10 +20,10 @@ async function PostsIdByHashtag(req, res) {
   try {
     const postsList = await getPostsIdByHashtag(hashtag);
 
-    res.send(postsList.rows);
+    return res.send(postsList.rows);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
