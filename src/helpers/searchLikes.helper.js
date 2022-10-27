@@ -9,14 +9,17 @@ async function searchLikes({id, username, req, res}) {
         const likesCount = await getLikesCount()
         const repostsCount = await getRepostsCount()
         const listLikes = await getListLikes()
+        const auxArr = []
+        const totalData = []
 
-        const postsJoinMetadata = await Promise.all(posts.map(async value => {
+        await Promise.all(posts.map(async value => {
             let personList = []
             let messageToolTip = ""
+            let newValue = {}
             value.liked = false
             value.likesCount = 0
             value.repostsCount = 0
-
+            
             myLikes.filter(element => {
                 if (value.post_id === element.post_id) {
                     value.liked = true
@@ -66,19 +69,42 @@ async function searchLikes({id, username, req, res}) {
             }
     
             const metadata = await getMetadata(value.post_url, res)
-            return {
+
+            if(!value.repost_id) {
+                value.reposted_on = value.created_at
+            }
+            if (value.repost_id) {
+                if (!auxArr.find(element => element == value.post_id)) {
+                    newValue = {...value,
+                        metadata,
+                        messageToolTip,
+                        repost_id: null,
+                        repost_user_id: null,
+                        reposted_by: null,
+                        reposted_on: new Date(value.created_at),
+                    }
+                    totalData.push(newValue)
+                }
+                auxArr.push(value.post_id)
+            }
+            
+            totalData.push({
                 ...value,
                 metadata,
                 messageToolTip
-            }
+            })
         }))
-    
-        return postsJoinMetadata
+
+        return totalData.sort(ordened)
 
     } catch (error) {
         console.error(error)
         res.sendStatus(500)
     }
+}
+
+function ordened(a,b) {
+    return new Date(b.reposted_on) - new Date(a.reposted_on)
 }
 
 export {searchLikes}

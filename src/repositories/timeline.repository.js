@@ -18,7 +18,7 @@ async function getPostsData() {
         JOIN posts ON users.id = posts.user_id
         LEFT JOIN reposts ON posts.id = reposts.post_id
         LEFT JOIN users AS u ON reposts.user_id = u.id
-        ORDER BY posts.created_at DESC
+        ORDER BY reposted_on DESC
         LIMIT 20;
     `)).rows
 }
