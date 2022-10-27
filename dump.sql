@@ -21,6 +21,71 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.comments (
+    id integer NOT NULL,
+    post_id integer NOT NULL,
+    user_id integer NOT NULL,
+    body text NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.comments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
+
+
+--
+-- Name: followers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.followers (
+    id integer NOT NULL,
+    follower_id integer NOT NULL,
+    followed_id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: followers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.followers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: followers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.followers_id_seq OWNED BY public.followers.id;
+
+
+--
 -- Name: hashtags; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -148,6 +213,38 @@ ALTER SEQUENCE public.posts_id_seq OWNED BY public.posts.id;
 
 
 --
+-- Name: reposts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reposts (
+    id integer NOT NULL,
+    post_id integer NOT NULL,
+    user_id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: reposts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.reposts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reposts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.reposts_id_seq OWNED BY public.reposts.id;
+
+
+--
 -- Name: sessions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -215,6 +312,20 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: comments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
+
+
+--
+-- Name: followers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.followers ALTER COLUMN id SET DEFAULT nextval('public.followers_id_seq'::regclass);
+
+
+--
 -- Name: hashtags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -243,6 +354,13 @@ ALTER TABLE ONLY public.posts ALTER COLUMN id SET DEFAULT nextval('public.posts_
 
 
 --
+-- Name: reposts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reposts ALTER COLUMN id SET DEFAULT nextval('public.reposts_id_seq'::regclass);
+
+
+--
 -- Name: sessions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -254,6 +372,21 @@ ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.ses
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: followers; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public.followers VALUES (1, 4, 2, '2022-10-26 10:28:48.83334');
+INSERT INTO public.followers VALUES (3, 3, 2, '2022-10-26 13:37:22.948061');
+INSERT INTO public.followers VALUES (4, 3, 1, '2022-10-26 14:20:14.350519');
 
 
 --
@@ -273,15 +406,15 @@ INSERT INTO public.hashtags VALUES (1, 'python', '2022-10-23 15:26:25.735184');
 -- Data for Name: likes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public.likes VALUES (245, 4, 3, '2022-10-25 17:16:47.689454');
+INSERT INTO public.likes VALUES (246, 4, 2, '2022-10-25 17:19:12.183855');
 INSERT INTO public.likes VALUES (126, 1, 4, '2022-10-20 20:11:53.012759');
-INSERT INTO public.likes VALUES (195, 4, 4, '2022-10-23 10:28:53.3297');
-INSERT INTO public.likes VALUES (154, 3, 4, '2022-10-21 15:28:36.383256');
-INSERT INTO public.likes VALUES (218, 4, 3, '2022-10-23 17:21:01.961396');
+INSERT INTO public.likes VALUES (247, 4, 4, '2022-10-25 17:19:56.353746');
+INSERT INTO public.likes VALUES (250, 3, 1, '2022-10-25 19:53:37.586365');
+INSERT INTO public.likes VALUES (253, 3, 2, '2022-10-25 20:10:27.486534');
+INSERT INTO public.likes VALUES (255, 3, 4, '2022-10-26 14:29:15.719142');
+INSERT INTO public.likes VALUES (256, 3, 3, '2022-10-26 14:39:12.614469');
 INSERT INTO public.likes VALUES (163, 5, 4, '2022-10-21 17:08:51.953005');
-INSERT INTO public.likes VALUES (164, 3, 3, '2022-10-21 19:04:29.481011');
-INSERT INTO public.likes VALUES (165, 3, 2, '2022-10-21 19:05:00.911772');
-INSERT INTO public.likes VALUES (219, 4, 2, '2022-10-23 17:38:09.190108');
-INSERT INTO public.likes VALUES (222, 4, 1, '2022-10-24 16:09:51.686695');
 
 
 --
@@ -292,7 +425,13 @@ INSERT INTO public.posts VALUES (1, 1, 'https://reactjs.org/docs/getting-started
 INSERT INTO public.posts VALUES (2, 1, 'https://reactjs.org/docs/getting-started.html', 'React é top!!', '2022-10-19 15:50:49.340055');
 INSERT INTO public.posts VALUES (3, 1, 'https://reactjs.org/docs/getting-started.html', 'Terceiro post!!', '2022-10-19 15:51:16.048195');
 INSERT INTO public.posts VALUES (4, 2, 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', 'O bom e velho JavaScript!', '2022-10-20 15:47:16.416657');
-INSERT INTO public.posts VALUES (105, 4, 'https://www.python.org/', '', '2022-10-24 16:27:28.182785');
+
+
+--
+-- Data for Name: reposts; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public.reposts VALUES (22, 4, 3, '2022-10-26 15:52:20.299066');
 
 
 --
@@ -332,6 +471,11 @@ INSERT INTO public.sessions VALUES (30, 4, '89205852-b0d9-43d1-a857-778a5d0a793f
 INSERT INTO public.sessions VALUES (31, 4, '71853565-ec34-4941-a5a5-5210b93edaab', true, '2022-10-23 15:12:32.929545');
 INSERT INTO public.sessions VALUES (32, 4, 'c46b4225-5e19-42af-9cb1-83410dc9f96c', true, '2022-10-23 15:20:30.847989');
 INSERT INTO public.sessions VALUES (33, 4, '28e6940e-fd51-4c73-b9a1-a424f89e954c', true, '2022-10-24 15:23:44.49425');
+INSERT INTO public.sessions VALUES (34, 4, 'b895ff08-74c5-401b-b9e0-bac1b01128a8', true, '2022-10-25 16:17:28.437556');
+INSERT INTO public.sessions VALUES (35, 4, 'd7731376-347b-4306-9a4e-7d38e0147d50', false, '2022-10-25 16:26:30.016193');
+INSERT INTO public.sessions VALUES (36, 3, '3b290791-0d94-41f0-8df8-9ca97a4cdab6', true, '2022-10-25 19:44:28.537522');
+INSERT INTO public.sessions VALUES (37, 4, '772a959d-e060-49bf-8e3f-729e82349729', false, '2022-10-26 10:22:08.827617');
+INSERT INTO public.sessions VALUES (38, 3, 'e7ef6fd1-5747-43b4-a282-a3caf13791da', true, '2022-10-26 13:36:10.122232');
 
 
 --
@@ -343,6 +487,20 @@ INSERT INTO public.users VALUES (2, 'Teste', 'teste@email.com', '1234', 'https:/
 INSERT INTO public.users VALUES (3, 'claudio', 'teste2@email.com', '$2b$10$uEZZDmO8i4.IMmU.GoTBke72LfamCzbUrWYugK28ieMoDVYFRRwni', 'https://blog.unyleya.edu.br/wp-content/uploads/2017/12/saiba-como-a-educacao-ajuda-voce-a-ser-uma-pessoa-melhor.jpeg', '2022-10-21 10:57:37.233367');
 INSERT INTO public.users VALUES (4, 'juninho', 'junior@gmail.com', '$2b$10$iFvs0ZVI7zVmvW5ZH97HbeuPsEq5JpilEV24JB8PhzIJIBTFD/0Ju', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2IBpiO_AVwErFJXlE_Hmwuq7iDlL1S4xCBYrgxOfp&s', '2022-10-21 16:30:33.767809');
 INSERT INTO public.users VALUES (5, 'maisum', 'maisum@gmail.com', '$2b$10$W7CER6yKfrOx.DLoLvGEHunkVwh3YEjOXAPvLBZsnXav/JZtFNXsC', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2IBpiO_AVwErFJXlE_Hmwuq7iDlL1S4xCBYrgxOfp&s', '2022-10-21 16:40:53.337111');
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.comments_id_seq', 1, false);
+
+
+--
+-- Name: followers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.followers_id_seq', 4, true);
 
 
 --
@@ -363,21 +521,28 @@ SELECT pg_catalog.setval('public.hashtags_posts_id_seq', 1, true);
 -- Name: likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.likes_id_seq', 222, true);
+SELECT pg_catalog.setval('public.likes_id_seq', 256, true);
 
 
 --
 -- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.posts_id_seq', 105, true);
+SELECT pg_catalog.setval('public.posts_id_seq', 140, true);
+
+
+--
+-- Name: reposts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.reposts_id_seq', 22, true);
 
 
 --
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 33, true);
+SELECT pg_catalog.setval('public.sessions_id_seq', 38, true);
 
 
 --
@@ -385,6 +550,22 @@ SELECT pg_catalog.setval('public.sessions_id_seq', 33, true);
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 5, true);
+
+
+--
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: followers followers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.followers
+    ADD CONSTRAINT followers_pkey PRIMARY KEY (id);
 
 
 --
@@ -420,6 +601,14 @@ ALTER TABLE ONLY public.posts
 
 
 --
+-- Name: reposts reposts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reposts
+    ADD CONSTRAINT reposts_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -449,6 +638,38 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments comments_post_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_post_id_fkey FOREIGN KEY (post_id) REFERENCES public.posts(id);
+
+
+--
+-- Name: comments comments_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: followers followers_followed_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.followers
+    ADD CONSTRAINT followers_followed_id_fkey FOREIGN KEY (followed_id) REFERENCES public.users(id);
+
+
+--
+-- Name: followers followers_follower_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.followers
+    ADD CONSTRAINT followers_follower_id_fkey FOREIGN KEY (follower_id) REFERENCES public.users(id);
 
 
 --
@@ -489,6 +710,22 @@ ALTER TABLE ONLY public.likes
 
 ALTER TABLE ONLY public.posts
     ADD CONSTRAINT posts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: reposts reposts_post_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reposts
+    ADD CONSTRAINT reposts_post_id_fkey FOREIGN KEY (post_id) REFERENCES public.posts(id);
+
+
+--
+-- Name: reposts reposts_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reposts
+    ADD CONSTRAINT reposts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
