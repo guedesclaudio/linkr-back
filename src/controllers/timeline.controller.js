@@ -11,7 +11,7 @@ async function listTimeline(req, res) {
   }
 
   try {
-    const searchResult = await searchLikes({ id, username, limit, req, res });
+    const searchResult = (await searchLikes({ id, username, limit, req, res }));
 
     res.status(200).send(searchResult);
   } catch (error) {

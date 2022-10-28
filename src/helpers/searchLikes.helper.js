@@ -11,6 +11,8 @@ async function searchLikes({id, username, limit, req, res}) {
         const listLikes = await getListLikes()
         const auxArr = []
         const totalData = []
+        let arr = []
+        let finish = false
 
         await Promise.all(posts.map(async value => {
             let personList = []
@@ -95,7 +97,9 @@ async function searchLikes({id, username, limit, req, res}) {
             })
         }))
         
-        return totalData.sort(ordened)
+        arr = totalData.sort(ordened)
+        
+        return arr.slice(0, limit)
 
     } catch (error) {
         console.error(error)
