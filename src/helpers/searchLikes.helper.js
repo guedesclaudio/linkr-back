@@ -1,16 +1,18 @@
 import { getPostsData, getMyLikes, getLikesCount, getRepostsCount, getListLikes } from "../repositories/timeline.repository.js"
 import { getMetadata } from "../helpers/getMetadata.helper.js"
 
-async function searchLikes({id, username, req, res}) {
+async function searchLikes({id, username, limit, req, res}) {
 
     try {
-        const posts = await getPostsData()
+        const posts = await getPostsData(limit)
         const myLikes = await getMyLikes(id)
         const likesCount = await getLikesCount()
         const repostsCount = await getRepostsCount()
         const listLikes = await getListLikes()
         const auxArr = []
         const totalData = []
+        let arr = []
+        let finish = false
 
         await Promise.all(posts.map(async value => {
             let personList = []
@@ -94,8 +96,10 @@ async function searchLikes({id, username, req, res}) {
                 messageToolTip
             })
         }))
-
-        return totalData.sort(ordened)
+        
+        arr = totalData.sort(ordened)
+        
+        return arr.slice(0, limit)
 
     } catch (error) {
         console.error(error)

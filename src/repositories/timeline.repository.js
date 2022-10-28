@@ -1,6 +1,6 @@
 import connection from "../database/database.js"
 
-async function getPostsData() {
+async function getPostsData(limit) {
     return (await connection.query(`
             SELECT 
             DISTINCT users.id AS user_id,
@@ -19,7 +19,7 @@ async function getPostsData() {
         LEFT JOIN reposts ON posts.id = reposts.post_id
         LEFT JOIN users AS u ON reposts.user_id = u.id
         ORDER BY reposted_on DESC
-        LIMIT 20;
+        ;
     `)).rows
 }
 
