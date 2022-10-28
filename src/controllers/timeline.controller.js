@@ -6,7 +6,6 @@ async function listTimeline(req, res) {
   let limit = 10
 
   if (page && page > 0) {
-    console.log(page)
     limit = Number(page) * 10
   }
 
