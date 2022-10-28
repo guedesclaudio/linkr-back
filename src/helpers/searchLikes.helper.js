@@ -1,10 +1,10 @@
 import { getPostsData, getMyLikes, getLikesCount, getRepostsCount, getListLikes } from "../repositories/timeline.repository.js"
 import { getMetadata } from "../helpers/getMetadata.helper.js"
 
-async function searchLikes({id, username, req, res}) {
+async function searchLikes({id, username, limit, req, res}) {
 
     try {
-        const posts = await getPostsData()
+        const posts = await getPostsData(limit)
         const myLikes = await getMyLikes(id)
         const likesCount = await getLikesCount()
         const repostsCount = await getRepostsCount()
@@ -94,7 +94,7 @@ async function searchLikes({id, username, req, res}) {
                 messageToolTip
             })
         }))
-
+        
         return totalData.sort(ordened)
 
     } catch (error) {
