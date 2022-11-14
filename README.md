@@ -1,7 +1,7 @@
 <div align="center">
   <h1>LINKR</h1>
   <br>
-  - Back-end de uma rede social para compartilhamento de links. Esse é um projeto full stack e criado em colaboração com mais 3 colegas. <a href = "">Repositório do front-end</a>
+  - Back-end de uma rede social para compartilhamento de links. Esse é um projeto full stack e criado em colaboração com mais 3 colegas. <a href = "https://github.com/guedesclaudio/linkr-front">Repositório do front-end</a>
   <br>
   <br>
 </div>
@@ -29,7 +29,7 @@
 - DOTENV
 - JOI
 - POSTGRESQL
-- JWT
+- UUID
 - HEROKU
 - GIT
 - GITHUB
